@@ -1,0 +1,29 @@
+package controller;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+public class Retake extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("retake") != null) {
+            HttpSession session = request.getSession();
+            session.removeAttribute("allAnsFromStudent");
+            session.removeAttribute("curAns");
+            session.removeAttribute("currentQuizIdx");
+            session.removeAttribute("quiz");
+            session.removeAttribute("quizzes");
+            session.removeAttribute("createdTime");
+            session.removeAttribute("score");
+            session.removeAttribute("time");
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        }
+    }
+}
