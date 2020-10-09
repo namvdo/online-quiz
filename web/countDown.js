@@ -10,7 +10,7 @@ function startTimer(duration, display) {
         display.textContent = minutes + ":" + seconds;
 
         if (--timer < 0) {
-            window.location.replace("quizResult.jsp");
+            window.location.replace("QuizResult");
             sessionStorage.removeItem("time");
         }
         sessionStorage.setItem("time", timer);
