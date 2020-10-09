@@ -62,12 +62,22 @@ public class TakeQuiz extends HttpServlet {
                 session.setAttribute("allAnswered", true);
             }
 
-            /* ------------------------------------------------- */
+            // get the the elapsed and redirect user if necessary
+
+            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+            Timestamp createdTime = (Timestamp) session.getAttribute("createdTime");
+            int totalTime = (int) session.getAttribute("totalTime");
+            if (currentTime.getTime() - createdTime.getTime() > totalTime * 1000) {
+                request.getRequestDispatcher("/QuizResult").forward(request, response);
+            }          
+            
+            
             if (request.getParameter("next") != null) {
                 currentQuizIdx = currentQuizIdx + 1;
             } else if (request.getParameter("prev") != null) {
                 currentQuizIdx -= 1;
             }
+            
             System.out.println("index: " + currentQuizIdx);
             // this means the actual index of the quiz on the db
             currentQuizId = quizzes.get(currentQuizIdx).getQuizId();
