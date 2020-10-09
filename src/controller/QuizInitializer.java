@@ -21,8 +21,8 @@ public class QuizInitializer extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int quizNums = Integer.parseInt(request.getParameter("numOfQuizzes"));
         try {
+            int quizNums = Integer.parseInt(request.getParameter("numOfQuizzes"));
             HttpSession session = request.getSession();
             List<QuizBean> quizzes = QuizDAO.getQuizzesRandomly(quizNums);
             int allQuizzes = (int) session.getAttribute("allQuizzes");
@@ -38,10 +38,9 @@ public class QuizInitializer extends HttpServlet {
             session.setAttribute("totalTime", 60);
             request.getRequestDispatcher("/TakeQuiz").forward(request, response);
         } catch (SQLException throwable) {
-            throwable.getCause();
-            System.out.println(throwable.getLocalizedMessage());
-            System.out.println("Some error here");
-            throwable.printStackTrace();
+            System.out.println("Some errors here on QuizInitializer, maybe cannot parse the string or some kind.");
+            request.setAttribute("invalidInput", true);
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
 }
