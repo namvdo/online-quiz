@@ -35,10 +35,11 @@ public class MakeQuiz extends HttpServlet {
         try {
             int latestQuizId = QuizDAO.getTheLatestQuizId();
             int latestAnswerId = AnswerDAO.getTheLatestAnswerId();
-            boolean isAnswerInsertedSuccessfully = false;
-            boolean isQuizInsertedSuccessfully = false;
             Timestamp now = new Timestamp(System.currentTimeMillis());
-            isQuizInsertedSuccessfully = QuizDAO.insertNewQuiz(latestQuizId + 1, quizDesc, teacherId, 1, now);
+
+            
+            boolean isAnswerInsertedSuccessfully = false;
+            boolean isQuizInsertedSuccessfully = QuizDAO.insertNewQuiz(latestQuizId + 1, quizDesc, teacherId, 1, now);
             for(int i = 0; i < 4; i++) {
                 if (correctAns == i) {
                     isAnswerInsertedSuccessfully = AnswerDAO.insertNewAnswer(latestQuizId + 1, latestAnswerId + 1 + i, answers.get(i), true, now);
@@ -54,7 +55,7 @@ public class MakeQuiz extends HttpServlet {
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
             }
         } catch (SQLException throwables) {
-
+            throwables.printStackTrace();
         }
 
     }
