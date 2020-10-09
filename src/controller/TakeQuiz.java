@@ -93,15 +93,4 @@ public class TakeQuiz extends HttpServlet {
         request.getRequestDispatcher("/takeQuiz.jsp").forward(request, response);
     }
 
-    /**
-     *
-     * @param request - the current request
-     * @return true if all questions have been answered
-     */
-    private static boolean areAllQuestionsAnswered(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        List<QuizBean> quizzes = (ArrayList<QuizBean>) session.getAttribute("quizzes");
-        Map<Integer, Integer> allAnsFromStudent = (HashMap) session.getAttribute("allAnsFromStudent");
-        return quizzes.size() == allAnsFromStudent.size();
-    }
 }
