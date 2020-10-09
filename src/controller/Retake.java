@@ -23,6 +23,7 @@ public class Retake extends HttpServlet {
             session.removeAttribute("createdTime");
             session.removeAttribute("score");
             session.removeAttribute("time");
+            session.removeAttribute("totalTime");
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
