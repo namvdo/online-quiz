@@ -11,7 +11,6 @@ function startTimer(duration, display) {
 
         if (--timer < 0) {
             window.location.replace("QuizResult");
-            sessionStorage.removeItem("time");
         }
         sessionStorage.setItem("time", timer);
         console.log("from countDown: " + sessionStorage.getItem("time"));
