@@ -46,15 +46,21 @@ public class TakeQuiz extends HttpServlet {
                     System.out.println("answer from TakeQuiz: " + answer);
                     answers.add(Integer.parseInt(answer));
                 }
-                System.out.println("from TakeQuiz: answer size" + answers.size());
                 allAnsFromStudent.put(currentQuizId, answers);
             } else {
                 List<Integer> unanswered = new ArrayList<>();
                 unanswered.add(-1);
                 allAnsFromStudent.put(currentQuizId, unanswered);
             }
-
+            
+            // check if the submit button has been clicked, from there, you need to get all unanswered quizzes after the current quiz index
             if (request.getParameter("submit") != null) {
+                for(int unansweredQuizIdx = currentQuizIdx + 1; unansweredQuizIdx < quizzes.size(); unansweredQuizIdx++) {
+                    int unansweredQuizId = quizzes.get(unansweredQuizIdx).getQuizId();
+                    List<Integer> unanswered = new ArrayList<>();
+                    unanswered.add(-1);
+                    allAnsFromStudent.put(unansweredQuizId, unanswered);
+                }
                 request.getRequestDispatcher("/QuizResult").forward(request, response);
             }
 
@@ -62,7 +68,7 @@ public class TakeQuiz extends HttpServlet {
                 session.setAttribute("allAnswered", true);
             }
 
-            // get the the elapsed and redirect user if necessary
+            // get the time elapsed and redirect user if necessary
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             Timestamp createdTime = (Timestamp) session.getAttribute("createdTime");
@@ -78,7 +84,6 @@ public class TakeQuiz extends HttpServlet {
                 currentQuizIdx -= 1;
             }
             
-            System.out.println("index: " + currentQuizIdx);
             // this means the actual index of the quiz on the db
             currentQuizId = quizzes.get(currentQuizIdx).getQuizId();
             List<AnswerBean> answersByQuizID = AnswerDAO.getAnswersByQuizID(currentQuizId);
@@ -86,6 +91,10 @@ public class TakeQuiz extends HttpServlet {
             session.setAttribute("curAns", answersByQuizID);
             session.setAttribute("currentQuizIdx", currentQuizIdx);
             session.setAttribute("quiz", quizzes.get(currentQuizIdx));
+            
+            if (request.getParameter("end") != null && request.getParameter("end").equals("true")) {
+                request.getRequestDispatcher("/QuizResult").forward(request, response);
+            }
         } catch (Exception e) {
             System.out.println("Some error here");
             e.printStackTrace();
