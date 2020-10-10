@@ -10,7 +10,7 @@ function startTimer(duration, display) {
         display.textContent = minutes + ":" + seconds;
 
         if (--timer < 0) {
-            window.location.replace("QuizResult");
+            window.location.replace("TakeQuiz?end=true");
         }
         sessionStorage.setItem("time", timer);
         console.log("from countDown: " + sessionStorage.getItem("time"));
