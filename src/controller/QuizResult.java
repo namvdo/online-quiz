@@ -35,6 +35,7 @@ public class QuizResult extends HttpServlet {
             boolean i2 = QuizAndAnswerDAO.insertClusterDetail(latestClusterId, studentAnswers);
             boolean i3 = QuizAndAnswerDAO.insertStudentResult(score, studentId, latestClusterId);
             System.out.println("from QuizResult: i1, i2, i3" + i1 + " " + i2 + " " + i3);
+            session.setAttribute("score", score);
             request.getRequestDispatcher("/quizResult.jsp").forward(request, response);
         } catch (SQLException throwable) {
             throwable.printStackTrace();
