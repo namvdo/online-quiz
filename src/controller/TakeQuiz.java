@@ -101,5 +101,25 @@ public class TakeQuiz extends HttpServlet {
             e.printStackTrace();
         }
     }
+    
+    private static void finishTheQuiz(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            HttpSession session = request.getSession();
+            int currentQuizIdx = (int) session.getAttribute("currentQuizIdx");
+            List<QuizBean> quizzes = (List) session.getAttribute("quizzes");
+            Map<Integer, List<Integer>> stdWithResponse = (Map) session.getAttribute("allAnsFromStudent");
+            if (currentQuizIdx == quizzes.size() - 1) {
+                List<Integer> unanswered = new ArrayList<>();
+                unanswered.add(-1);
+                stdWithResponse.put(quizzes.get(currentQuizIdx).getQuizId(), unanswered);
+            } else {
+                for (int unansweredQuizIdx = currentQuizIdx + 1; unansweredQuizIdx < quizzes.size(); unansweredQuizIdx++) {
+                    int unansweredQuizId = quizzes.get(unansweredQuizIdx).getQuizId();
+                    List<Integer> unanswered = new ArrayList<>();
+                    unanswered.add(-1);
+                    stdWithResponse.put(unansweredQuizId, unanswered);
+                }
+            }
+            request.getRequestDispatcher("/QuizResult").forward(request, response);
+    }
 
 }
