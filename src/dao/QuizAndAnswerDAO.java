@@ -31,14 +31,13 @@ public class QuizAndAnswerDAO {
      * @param endingTime - the finishing time when either a student hits the submit button or time is up.
      * @return true if the given information is successfully saved.
      */
-    public static boolean insertQuizCluster(String studentId, int clusterId, Timestamp startingTime, Timestamp endingTime) throws SQLException {
-        String sql = "insert into [OnlineQuiz].[dbo].[quiz_cluster](cluster_id,  student_id, created_time, ended_time) values (?, ?, ?, ?)";
+    public static boolean insertQuizCluster(String studentId, Timestamp startingTime, Timestamp endingTime) throws SQLException {
+        String sql = "insert into [OnlineQuiz].[dbo].[quiz_cluster](student_id, created_time, ended_time) values (?, convert(datetime,?,5), convert(datetime,?,5))";
         try {
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, clusterId);
-            pre.setString(2, studentId);
-            pre.setTimestamp(3, startingTime);
-            pre.setTimestamp(4, endingTime);
+            pre.setString(1, studentId);
+            pre.setTimestamp(2, startingTime);
+            pre.setTimestamp(3, endingTime);
             int result = pre.executeUpdate();
             System.out.println("from QuizAndAnswerDAO: " + result);
             return result == 1;
@@ -73,9 +72,10 @@ public class QuizAndAnswerDAO {
             pre.setString(2, studentId);
             pre.setInt(3, clusterId);
             return pre.executeUpdate() == 1;
-        } catch (SQLException throwables) {
-            return false;
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
+        return false;
     }
 
     public static int getTheLastClusterId() {
