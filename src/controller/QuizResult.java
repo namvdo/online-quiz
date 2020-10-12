@@ -26,19 +26,15 @@ public class QuizResult extends HttpServlet {
         Timestamp endingTime = new Timestamp(System.currentTimeMillis());
         String studentId = (String) request.getSession().getAttribute("user");
         Map<Integer, List<Integer>> studentAnswers = (HashMap<Integer, List<Integer>>) session.getAttribute("allAnsFromStudent");
-        System.out.println("from quizresult: " + Arrays.toString(request.getParameterValues("answer")));
         studentAnswers.forEach((key, value) -> System.out.println("Key: " + key + " | Value: " + value));
         try {
             float score = Utility.calculateStudentScore(studentAnswers);
-            System.out.println("From doPost QuizResult score: " + score);
-            System.out.println("From doPost QuizResult: " + studentAnswers.toString());
+            boolean i1 = QuizAndAnswerDAO.insertQuizCluster(studentId, startingTime, endingTime);
+            System.out.println("i1: " + i1);
             int latestClusterId = QuizAndAnswerDAO.getTheLastClusterId();
-            System.out.println("From doPost QuizResult: " + latestClusterId);
-            boolean i1 = QuizAndAnswerDAO.insertQuizCluster(studentId, latestClusterId + 1, startingTime, endingTime);
-            boolean i2 = QuizAndAnswerDAO.insertClusterDetail(latestClusterId + 1, studentAnswers);
-            boolean i3 = QuizAndAnswerDAO.insertStudentResult(score, studentId, latestClusterId + 1);
+            boolean i2 = QuizAndAnswerDAO.insertClusterDetail(latestClusterId, studentAnswers);
+            boolean i3 = QuizAndAnswerDAO.insertStudentResult(score, studentId, latestClusterId);
             System.out.println("from QuizResult: i1, i2, i3" + i1 + " " + i2 + " " + i3);
-            session.setAttribute("score", score);
             request.getRequestDispatcher("/quizResult.jsp").forward(request, response);
         } catch (SQLException throwable) {
             throwable.printStackTrace();
