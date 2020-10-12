@@ -73,9 +73,7 @@ public class TakeQuiz extends HttpServlet {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             Timestamp createdTime = (Timestamp) session.getAttribute("createdTime");
             int totalTime = (int) session.getAttribute("totalTime");
-            if (currentTime.getTime() - createdTime.getTime() > totalTime * 1000) {
-                request.getRequestDispatcher("/QuizResult").forward(request, response);
-            }          
+                   
             
             
             if (request.getParameter("next") != null) {
@@ -91,15 +89,17 @@ public class TakeQuiz extends HttpServlet {
             session.setAttribute("curAns", answersByQuizID);
             session.setAttribute("currentQuizIdx", currentQuizIdx);
             session.setAttribute("quiz", quizzes.get(currentQuizIdx));
-            
-            if (request.getParameter("end") != null && request.getParameter("end").equals("true")) {
-                request.getRequestDispatcher("/QuizResult").forward(request, response);
+            // if either the user presses the submit button, or time is up, or exceed the time stored in the server-side (in case they disable js).
+            if (request.getParameter("submit") != null || currentTime.getTime() - createdTime.getTime() > totalTime * 1000
+                    || request.getParameter("end") != null && "true".equals(request.getParameter("end"))) {
+                finishTheQuiz(request, response);
+            } else { 
+                request.getRequestDispatcher("/takeQuiz.jsp").forward(request, response);
             }
         } catch (Exception e) {
             System.out.println("Some error here");
             e.printStackTrace();
         }
-        request.getRequestDispatcher("/takeQuiz.jsp").forward(request, response);
     }
 
 }
