@@ -33,14 +33,15 @@
 
             <c:choose>
                 <c:when test="${contains eq answer.answerId}">
-                    <input type="checkbox" style="width:20px;height:20px;" name="answer" value="${answer.answerId}"
-                           checked> ${answer.answerText}
+                    <input type="checkbox" style="width:20px;height:20px;" name="answer" value="${answer.answerId}" class="answer-checkbox"
+                           checked onclick="getChosenAnswers()"> ${answer.answerText}
                 </c:when>
                 <c:otherwise>
-                    <input type="checkbox" style="width:20px;height:20px;" name="answer"
-                           value="${answer.answerId}"> ${answer.answerText}
+                    <input type="checkbox" style="width:20px;height:20px;" name="answer" class="answer-checkbox"
+                           value="${answer.answerId}" onclick="getChosenAnswers()"> ${answer.answerText}
                 </c:otherwise>
             </c:choose>
+            <input type="hidden" id="quizId" value="${quiz.quizId}">
             <c:set var="count" value="${count + 1}"/>
             <br>
         </c:forEach>
@@ -50,9 +51,9 @@
         <c:if test="${currentQuizIdx < quizzes.size() - 1}">
             <input type="submit" value="Next" name="next">
         </c:if>
-        <c:if test="${currentQuizIdx == quizzes.size() - 1 or allAnswered == true}">
+<%--        <c:if test="${currentQuizIdx == quizzes.size() - 1 or allAnswered == true}">--%>
             <input type="submit" name="submit" value="Submit">
-        </c:if>
+<%--        </c:if>--%>
     </form>
 
 </div>
