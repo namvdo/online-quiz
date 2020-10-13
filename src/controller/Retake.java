@@ -13,17 +13,9 @@ public class Retake extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter("retake") != null) {
+       if (request.getParameter("retake") != null) {
             HttpSession session = request.getSession();
-            session.removeAttribute("allAnsFromStudent");
-            session.removeAttribute("curAns");
-            session.removeAttribute("currentQuizIdx");
-            session.removeAttribute("quiz");
-            session.removeAttribute("quizzes");
-            session.removeAttribute("createdTime");
             session.removeAttribute("score");
-            session.removeAttribute("time");
-            session.removeAttribute("totalTime");
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
