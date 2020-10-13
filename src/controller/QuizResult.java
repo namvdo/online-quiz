@@ -34,8 +34,15 @@ public class QuizResult extends HttpServlet {
             int latestClusterId = QuizAndAnswerDAO.getTheLastClusterId();
             boolean i2 = QuizAndAnswerDAO.insertClusterDetail(latestClusterId, studentAnswers);
             boolean i3 = QuizAndAnswerDAO.insertStudentResult(score, studentId, latestClusterId);
-            System.out.println("from QuizResult: i1, i2, i3" + i1 + " " + i2 + " " + i3);
+            System.out.println("studentId; " + studentId  + " lastestClsuter: " + latestClusterId);
             session.setAttribute("score", score);
+            session.removeAttribute("allAnsFromStudent");
+            session.removeAttribute("curAns");
+            session.removeAttribute("currentQuizIdx");
+            session.removeAttribute("quiz");
+            session.removeAttribute("quizzes");
+            session.removeAttribute("createdTime");
+            session.removeAttribute("totalTime");
             request.getRequestDispatcher("/quizResult.jsp").forward(request, response);
         } catch (SQLException throwable) {
             throwable.printStackTrace();
