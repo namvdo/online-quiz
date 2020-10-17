@@ -1,4 +1,3 @@
-create database OnlineQuiz
 create table student (
     student_username varchar(50) primary key,
     password varchar(50),
@@ -13,7 +12,7 @@ create table teacher (
 
 create table quiz (
     quiz_id int primary key,
-    quiz_description varchar(500),
+    quiz_description nvarchar(max),
     created_by varchar(50),
     weight int,
     created_at datetime,
@@ -24,7 +23,7 @@ create table quiz (
 create table quiz_answer (
     quiz_id int,
     answer_id int,
-    answer_text varchar(200),
+    answer_text varchar(500),
     is_correct BIT,
     created_at datetime,
     updated_at datetime,
