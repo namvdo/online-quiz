@@ -30,10 +30,6 @@ function startTimer(duration, display) {
     }, 1000);
 }
 
-/**
- * This function is called each time the checkbox is unchecked/checked. This is used for side-effect, modifying the value
- * of the answer_ids and current_quiz_id
- */
 const getChosenAnswers = () => {
     let answers = document.getElementsByClassName("answer-checkbox");
     let answersId = [];
