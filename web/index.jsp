@@ -19,7 +19,7 @@
             <input type="submit" value="Start" class="btn btn-success">
         </form>
         <c:if test="${invalidInput == true}">
-            <p style="color:red">Your input is too large, please input again.</p>
+            <p style="color:red">Invalid input</p>
         </c:if>
     </div>
 <script src="removeTime.js"></script>

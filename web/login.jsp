@@ -26,21 +26,9 @@
         Don't have an account? Click <a class="form-recovery" href="./register.jsp">here</a> to sign up a new one.
     </span>
 </div>
-<%
-    Cookie[] cookies = request.getCookies();
-    for(Cookie cookie: cookies) {
-        if (cookie.getName().equals("username")) {
-            out.print("Fuck");
-        }
-        if (cookie.getName().equals("password")) {
-            out.print("Fuck again");
-        }
-    }
-%>
 
-<% if (request.getAttribute("loginFailed") != null && (boolean) request.getAttribute("loginFailed")) {
-    out.println("<p style=color:red>Incorrect username or password. </p>");
-}
-%>
+<c:if test="${loginFailed != null && loginFalied == true}">
+    <p style="color:red" class="text-center">Incorrect username or password. </p>
+</c:if>
 </body>
 </html>

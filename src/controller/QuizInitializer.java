@@ -33,11 +33,11 @@ public class QuizInitializer extends HttpServlet {
             session.setAttribute("quizzes", quizzes);
             Timestamp createdTime = new Timestamp((new Date()).getTime());
             session.setAttribute("createdTime", createdTime);
-            
-            // for testing purpose, I set the time for answering quizzes is for 1 minutue.
+            // for testing purpose, I set the time for answering quizzes is for 1 minute.
             session.setAttribute("totalTime", 60);
             request.getRequestDispatcher("/TakeQuiz").forward(request, response);
-        } catch (SQLException throwable) {
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
             System.out.println("Some errors here on QuizInitializer, maybe cannot parse the string or some kind.");
             request.setAttribute("invalidInput", true);
             request.getRequestDispatcher("/index.jsp").forward(request, response);
