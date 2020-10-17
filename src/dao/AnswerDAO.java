@@ -70,6 +70,7 @@ public class AnswerDAO {
     }
     public static boolean insertNewAnswer(int quizId, int answerId, String answerText, boolean isCorrect, Timestamp createdAt) throws SQLException {
         String sql = "insert into [OnlineQuiz].[dbo].[quiz_answer](quiz_id, answer_id, answer_text, is_correct, created_at) values (?, ?, ?, ?, ?)";
+        if (answerText.isEmpty()) return false;
         pre = conn.prepareStatement(sql);
         pre.setInt(1, quizId);
         pre.setInt(2, answerId);

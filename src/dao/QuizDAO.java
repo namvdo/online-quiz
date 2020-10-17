@@ -54,6 +54,7 @@ public class QuizDAO {
     }
     public static boolean insertNewQuiz(int quizId, String quizDesc, String createdBy, int weight, Timestamp createdAt) throws SQLException {
         String sql = "insert into [OnlineQuiz].[dbo].[quiz](quiz_id, quiz_description, created_by, weight, created_at) values (?, ?, ?, ?, ?)";
+        if (quizDesc.isEmpty()) return false;
         pre = conn.prepareStatement(sql);
         pre.setInt(1, quizId);
         pre.setString(2, quizDesc);
