@@ -26,7 +26,7 @@
            <tr>
                <td>${startIndex + idx}</td>
                <td>${item.quizDescription}</td>
-               <td>${item.createdAt}</td>
+               <td><fmt:formatDate value="${item.createdAt}" type="date"/></td>
                <c:set var="idx" value="${idx + 1}"/>
            </tr>
        </c:forEach>
