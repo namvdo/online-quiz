@@ -19,6 +19,7 @@ public class Login extends HttpServlet {
 
             boolean isLoggedInSuccessfully = UserDAO.isLoggedInSuccessfully(username, Utility.applySha256(password).substring(0, 50), isTeacher);
             System.out.println("is teacher: " + isTeacher);
+            System.out.println("is logged successfully: " + isLoggedInSuccessfully);
             if (isLoggedInSuccessfully) {
                 Cookie cookie1 = new Cookie("username", username);
                 Cookie cookie2 = new Cookie("password", password);
@@ -40,6 +41,8 @@ public class Login extends HttpServlet {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            request.setAttribute("loginFailed", true);
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 

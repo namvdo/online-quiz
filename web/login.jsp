@@ -21,14 +21,15 @@
         <button type="submit" class="btn btn-primary text-center">Login</button>
     </div>
 </form>
+<c:if test="${loginFailed != null && loginFailed == true}">
+    <p style="color:red" class="text-center">Incorrect username or password. </p>
+</c:if>
 <div class="text-center p-t-46 p-b-20">
     <span class="txt2">
         Don't have an account? Click <a class="form-recovery" href="./register.jsp">here</a> to sign up a new one.
     </span>
 </div>
 
-<c:if test="${loginFailed != null && loginFalied == true}">
-    <p style="color:red" class="text-center">Incorrect username or password. </p>
-</c:if>
+
 </body>
 </html>
