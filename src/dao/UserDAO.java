@@ -18,7 +18,16 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-    // since there are only 2 types of users, then we can check if this is a teacher and insert data to the corresponding table.
+
+    /**
+     *
+     * @param username - username be registered
+     * @param password - password to be registered
+     * @param email - email to be registered
+     * @param isTeacher - whether this user registers as a teacher or a student
+     * @return true if register successfully, false it doesn't
+     * @throws SQLException
+     */
     public static boolean registerUser(String username, String password, String email, boolean isTeacher) throws SQLException {
         int rsNo = 0;
         String sql;
@@ -32,12 +41,11 @@ public class UserDAO {
         pre.setString(2, password.substring(0, 50));
         pre.setString(3, email);
         try {
-            rsNo = pre.executeUpdate(); // try to insert a new row
+            rsNo = pre.executeUpdate();
         } catch (Exception e) {
-            System.out.println("Error");
+            e.printStackTrace();
             return false;
         }
-        System.out.println("rs No: " + rsNo);
         return rsNo == 1;
     }
 

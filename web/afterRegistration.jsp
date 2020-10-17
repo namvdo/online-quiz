@@ -8,11 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@include file="header.jsp"%>
-<% boolean isSuccess = (boolean) request.getAttribute("successfullyRegister"); %>
-<% if (isSuccess) { %>
-<h3>You have registered successfully, click <a href="./login.jsp">here</a> to login.</h3>
-<% } else {%>
-<h3>Unsuccessful registration, this username is already existed, click <a href="./register.jsp">here</a> to register again.</h3>
-<%}%>
+<c:choose>
+<c:when test="${successfullyRegister == true}">
+    <p class="text-center">You have registered successfully, click <a href="login.jsp">here</a>  to log in.</p>
+</c:when>
+<c:otherwise>
+    <p class="text-center">Unsuccessful registration. Please re-register.</p>
+</c:otherwise>
+</c:choose>
 </body>
 </html>
