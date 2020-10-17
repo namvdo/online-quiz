@@ -78,7 +78,15 @@
     <servlet>
         <servlet-name>ErrorHandler</servlet-name>
         <servlet-class>controller.ErrorHandler</servlet-class>
-    </servlet> 
+    </servlet>
+    <servlet>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>controller.HomeController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern>/HomeController</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ErrorHandler</servlet-name>
         <url-pattern>/ErrorHandler</url-pattern>
@@ -99,4 +107,5 @@
         <servlet-name>Logout</servlet-name>
         <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
+
 </web-app>

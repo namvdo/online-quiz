@@ -22,48 +22,33 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="collapse navbar-collapse ">
             <div class="navbar-nav mx-auto">
-                <a class="nav-item nav-link px-5" href="./index.jsp">Home</a>
+                <a class="nav-item nav-link px-5" href="${pageContext.request.contextPath}/HomeController">Home</a>
                 <c:choose>
                     <c:when test="${user != null && isTeacher != true}">
                         <a class="nav-item nav-link px-5" href="./index.jsp">Take quiz</a>
                     </c:when>
-                    <c:otherwise>
-<%--                        <c:redirect url="${pageContext.request.contextPath}/ErrorHandler"/>--%>
-                    </c:otherwise>
                 </c:choose>
                 <c:choose>
                     <c:when test="${isTeacher == true}">
                         <a class="nav-item nav-link px-5" href="./makeQuiz.jsp">Make quiz</a>
                     </c:when>
-                    <c:otherwise>
-<%--                        <c:redirect url="${pageContext.request.contextPath}/ErrorHandler"/>--%>
-                    </c:otherwise>
                 </c:choose>
                 <c:choose>
                     <c:when test="${isTeacher == true}">
                         <a class="nav-item nav-link px-5" href="${pageContext.request.contextPath}/ManageQuiz">Manage
                             quiz</a>
                     </c:when>
-                    <c:otherwise>
-<%--                        <c:redirect url="${pageContext.request.contextPath}/ErrorHandler"/>--%>
-                    </c:otherwise>
                 </c:choose>
                 <c:choose>
                     <c:when test="${user != null && isTeacher == false}">
                         <a class="nav-item nav-link px-5" href="${pageContext.request.contextPath}/QuizHistory">Quiz
                             history</a>
                     </c:when>
-                    <c:otherwise>
-<%--                        <c:redirect url="${pageContext.request.contextPath}/ErrorHandler"/>--%>
-                    </c:otherwise>
                 </c:choose>
                 <c:choose>
                     <c:when test="${user ne null}">
                         <a class="nav-item nav-link" href="${pageContext.request.contextPath}/Logout">Log out</a>
                     </c:when>
-                    <c:otherwise>
-<%--                        <c:redirect url="${pageContext.request.contextPath}/ErrorHandler"/>--%>
-                    </c:otherwise>
                 </c:choose>
             </div>
         </div>

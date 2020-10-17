@@ -11,11 +11,11 @@
     <h4 class="text-center mt-5">Login Form</h4>
     <div class="form-group col-lg-5 mx-auto">
         <label for="username" class="mx-auto">Username</label>
-        <input type="text" id="username" name="username" class="form-control" aria-describedby="userHelp" placeholder="Enter the username...">
+        <input type="text" id="username" name="username" class="form-control" aria-describedby="userHelp" value="${cookie['username'].value}" placeholder="Enter the username...">
     </div>
     <div class="form-group col-lg-5 mx-auto">
         <label for="exampleInputPassword1" class="mx-auto">Password</label>
-        <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+        <input type="password" class="form-control" name="password" value="${cookie['password'].value}"id="exampleInputPassword1" placeholder="Password">
     </div>
     <div class="col-md-12 text-center">
         <button type="submit" class="btn btn-primary text-center">Login</button>
@@ -26,7 +26,17 @@
         Don't have an account? Click <a class="form-recovery" href="./register.jsp">here</a> to sign up a new one.
     </span>
 </div>
-
+<%
+    Cookie[] cookies = request.getCookies();
+    for(Cookie cookie: cookies) {
+        if (cookie.getName().equals("username")) {
+            out.print("Fuck");
+        }
+        if (cookie.getName().equals("password")) {
+            out.print("Fuck again");
+        }
+    }
+%>
 
 <% if (request.getAttribute("loginFailed") != null && (boolean) request.getAttribute("loginFailed")) {
     out.println("<p style=color:red>Incorrect username or password. </p>");

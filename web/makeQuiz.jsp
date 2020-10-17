@@ -12,18 +12,22 @@
             <label for = "question">Question</label>
             <textarea type = "text" name="quizDes" class = "form-control" rows="2" id="question" placeholder = "Enter the quiz description..."></textarea>
         </div>
+    <br>
         <div class = "form-group">
             <label>Option 1</label>
             <textarea id="otp1" name="opt1" class = "form-control"  placeholder = "Enter the first option"></textarea>
         </div>
+    <br>
         <div class = "form-group">
             <label>Option 2</label>
             <textarea id="otp2" name="opt2" class = "form-control" placeholder = "Enter the second option"></textarea>
         </div>
+    <br>
         <div class = "form-group">
             <label>Option 3</label>
             <textarea id="otp3" name="opt3" class = "form-control"  placeholder = "Enter the third option"></textarea>
         </div>
+    <br>
         <div class = "form-group">
             <label>Option 4</label>
             <textarea id="otp4" name="opt4" class = "form-control" placeholder = "Enter the fourth option"></textarea>
