@@ -83,6 +83,14 @@
         <servlet-name>HomeController</servlet-name>
         <servlet-class>controller.HomeController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteQuiz</servlet-name>
+        <servlet-class>controller.DeleteQuiz</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteQuiz</servlet-name>
+        <url-pattern>/DeleteQuiz</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/HomeController</url-pattern>

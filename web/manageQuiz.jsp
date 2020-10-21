@@ -28,10 +28,14 @@
                <td>${item.quizDescription}</td>
                <td><fmt:formatDate value="${item.createdAt}" type="date"/></td>
                <c:set var="idx" value="${idx + 1}"/>
+               <td><a href="${pageContext.request.contextPath}/DeleteQuiz?quizId=${item.quizId}"><button>Delete</button></a></td>
            </tr>
        </c:forEach>
     </tbody>
 </table>
+<c:if test="${successfullyDeleted == true}">
+    <p style="text-align:center">Successfully deleted.</p>
+</c:if>
 <c:forEach begin="1" end="${pages}" step="1" var="page">
     <a href="ManageQuiz?page=${page}">${page}</a>
 </c:forEach>

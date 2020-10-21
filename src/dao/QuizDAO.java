@@ -105,6 +105,7 @@ public class QuizDAO {
             QuizBean quiz = new QuizBean();
             quiz.setQuizDescription(rs.getString(3));
             quiz.setCreatedAt(rs.getTimestamp(5));
+            quiz.setQuizId(rs.getInt(1));
             quizzes.add(quiz);
         }
         quizzes.forEach(System.out::println);

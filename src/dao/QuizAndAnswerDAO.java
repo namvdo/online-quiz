@@ -1,5 +1,6 @@
 package dao;
 
+import bean.AnswerBean;
 import bean.QuizBean;
 
 import java.sql.*;
@@ -26,7 +27,6 @@ public class QuizAndAnswerDAO {
     /**
      *
      * @param studentId - id of the student being saved
-     * @param clusterId - id of the cluster, a cluster here means a number of quizzes student has taken for a given try
      * @param startingTime - initial time when starting taking the quizzes
      * @param endingTime - the finishing time when either a student hits the submit button or time is up.
      * @return true if the given information is successfully saved.
@@ -92,6 +92,16 @@ public class QuizAndAnswerDAO {
         return 0;
     }
 
-
+    public static boolean deleteQuizAndAnswers(int quizId) throws SQLException {
+        String sql = "delete from [onlinequiz].[dbo].[quiz_answer] where quiz_id = ?";
+        pre = conn.prepareStatement(sql);
+        pre.setInt(1, quizId);
+        int deletedAnswerCount = pre.executeUpdate();
+        sql = "delete from [onlinequiz].[dbo].[quiz] where quiz_id = ?";
+        pre = conn.prepareStatement(sql);
+        pre.setInt(1, quizId);
+        int deletedQuizCount = pre.executeUpdate();
+        return deletedAnswerCount != 0 && deletedQuizCount == 1;
+    }
 
 }
