@@ -2,6 +2,7 @@ package controller;
 
 import bean.QuizBean;
 import dao.QuizDAO;
+import dao.UserDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,6 +30,13 @@ public class QuizInitializer extends HttpServlet {
             if (quizNums > allQuizzes) {
                 request.setAttribute("invalidInput", true);
                 request.getRequestDispatcher("./index.jsp").forward(request, response);
+                return;
+            }
+            String username = (String) request.getSession().getAttribute("user");
+            if (UserDAO.isUserATeacher(username)) {
+                request.setAttribute("teacher", true);
+                request.getRequestDispatcher("./index.jsp").forward(request, response);
+                return;
             }
             session.setAttribute("quizzes", quizzes);
             Timestamp createdTime = new Timestamp((new Date()).getTime());

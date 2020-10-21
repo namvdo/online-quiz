@@ -22,6 +22,9 @@
             <p style="color:red">Invalid input</p>
         </c:if>
     </div>
+    <c:if test="${teacher == true}">
+        <p style="text-align:center">You're not a student</p>
+    </c:if>
 <script src="removeTime.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

@@ -97,7 +97,6 @@ public class QuizDAO {
                 "        SELECT *\n" +
                 "                FROM data\n" +
                 "        WHERE row_id BETWEEN ? AND ?";
-//        String sql = "select * from [OnlineQuiz].[dbo].[quiz] order by quiz_id offset ? rows fetch next ? rows only";
         pre = conn.prepareStatement(sql);
         pre.setInt(1, from);
         pre.setInt(2, to);

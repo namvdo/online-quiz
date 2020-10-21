@@ -31,7 +31,9 @@ public class UserDAO {
     public static boolean registerUser(String username, String password, String email, boolean isTeacher) throws SQLException {
         int rsNo = 0;
         String sql = "insert into account(username, password, email, is_teacher) values (?, ?, ?, ?)";
-
+        if (isRegisteredUser(username)) {
+            return false;
+        }
 
         pre = connection.prepareStatement(sql);
         pre.setString(1, username);
@@ -47,13 +49,8 @@ public class UserDAO {
         return rsNo == 1;
     }
 
-    public static boolean isRegisteredUser(String username, boolean isTeacher) throws SQLException {
-        String sql;
-        if (isTeacher) {
-            sql = "select top 1 * from [OnlineQuiz].[dbo].[teacher] where teacher_username= ?";
-        } else {
-            sql = "select top 1 * from [OnlineQuiz].[dbo].[student] where student_username= ?";
-        }
+    public static boolean isRegisteredUser(String username) throws SQLException {
+        String sql = "select top 1 * from [onlinequiz].[dbo].[account] where account=?";
         pre = connection.prepareStatement(sql);
         pre.setString(1, username);
         rs = pre.executeQuery();
