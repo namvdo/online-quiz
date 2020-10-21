@@ -50,7 +50,6 @@ public class TakeQuiz extends HttpServlet {
                 List<Integer> unanswered = new ArrayList<>();
                 unanswered.add(-1);
                 allAnsFromStudent.put(currentQuizId, unanswered);
-                System.out.println("currentQuizIdx: " + currentQuizIdx + " answer: " + Arrays.toString(request.getParameterValues("answer"))) ;
             }
 
 

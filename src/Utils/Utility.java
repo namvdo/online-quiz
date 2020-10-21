@@ -37,9 +37,8 @@ public class Utility {
      * @return - the final score
      */
     public static float calculateStudentScore(Map<Integer, List<Integer>> questionsAndResponses) throws SQLException {
-        int count = 0;
         System.out.println("From calculateStudentScore: " + questionsAndResponses.toString());
-
+        float mark = 0;
         for(Map.Entry<Integer, List<Integer>> ques: questionsAndResponses.entrySet()) {
             List<Integer> correctAns = AnswerDAO.correctAnswersForQuiz(ques.getKey());
             correctAns.forEach(ans -> System.out.println("correct answer id: " + ans));
@@ -50,25 +49,17 @@ public class Utility {
             }
             // this is for getting a percent of the mark, not the whole one, for example, a quiz with 2 possible correct answers, then each correct answer gives you 0.5
             float percent = 1 / (float) correctAns.size();
-            float mark = 0;
-
+            System.out.println("percent: " + percent);
             for(int i = 0; i < stdAnsSize; i++) {
-//                if (correctAns.contains(ques.getValue().get(i))) {
-//                    System.out.println("mark: " + mark);
-//                    mark += percent;
-//                }
-                for (Integer correctAn : correctAns) {
-                    if (ques.getValue().get(i).equals(correctAn)) {
-                        mark += percent;
-                    }
+                if (correctAns.contains(questionsAndResponses.get(ques.getKey()).get(i))) {
+                    mark += percent;
+                    System.out.println("current mark fuck: " +  mark);
                 }
             }
-            count += mark;
         }
 
 
-        System.out.println("From calculateStudentScore: " + (count / (float) questionsAndResponses.size() * 10));
-        return count / (float) questionsAndResponses.size() * 10;
+        return mark / (float) questionsAndResponses.size() * 10;
     }
 
 

@@ -50,7 +50,7 @@ public class UserDAO {
     }
 
     public static boolean isRegisteredUser(String username) throws SQLException {
-        String sql = "select top 1 * from [onlinequiz].[dbo].[account] where account=?";
+        String sql = "select top 1 * from [onlinequiz].[dbo].[account] where username=?";
         pre = connection.prepareStatement(sql);
         pre.setString(1, username);
         rs = pre.executeQuery();

@@ -42,6 +42,7 @@ public class MakeQuiz extends HttpServlet {
             if (quizDesc.isEmpty()) {
                 request.setAttribute("emptyQuizDes", true);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
+                return;
             }
 
             boolean isAllEmpty = true;
@@ -51,6 +52,7 @@ public class MakeQuiz extends HttpServlet {
             if (isAllEmpty) {
                 request.setAttribute("allEmpty", true);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
+                return;
             }
             // check how many answer options are not null, if there is only 1 then forward to makeQuiz.jsp and alert fail to insert
             int optionsNonEmpty = 0;
@@ -62,36 +64,44 @@ public class MakeQuiz extends HttpServlet {
             if (optionsNonEmpty < 2) {
                 request.setAttribute("noQuiz", optionsNonEmpty);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
+                return;
             }
             String teacherId = (String) request.getSession().getAttribute("user");
-            byte correctAns = -1;
-            try {
-                System.out.println("answer: " + request.getParameter("answer"));
-                correctAns = Byte.parseByte(request.getParameter("answer"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.setAttribute("notProvideCorrectAns", true);
-                request.getRequestDispatcher("makeQuiz.jsp").forward(request, response);
+            List<Integer> correctAns = new ArrayList<>();
+            List<Integer> incorrectAns = new ArrayList<>();
+            String[] options = request.getParameterValues("answer");
+            if (options.length == 4) {
+                request.setAttribute("oversized", true);
+                request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
+                return;
+
+            }
+            for(int i = 0; i < options.length; i++) {
+                correctAns.add(Integer.parseInt(options[i]));
+            }
+            for(int i = 0; i < 4; i++) {
+                if (!correctAns.contains(i)) {
+                    incorrectAns.add(i);
+                }
             }
             int latestQuizId = QuizDAO.getTheLatestQuizId();
             int latestAnswerId = AnswerDAO.getTheLatestAnswerId();
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
 
-            boolean isAnswerInsertedSuccessfully = false;
+            boolean isAnswerInsertedSuccessfully = true;
             boolean isQuizInsertedSuccessfully = QuizDAO.insertNewQuiz(latestQuizId + 1, quizDesc, teacherId, 1, now);
-            for (int i = 0; i < optionsNonEmpty; i++) {
-                if (answers.get(i).isPresent()) {
-                    if (correctAns == i) {
-                        isAnswerInsertedSuccessfully = AnswerDAO.insertNewAnswer(latestQuizId + 1, latestAnswerId + 1 + i, answers.get(i).get(), true, now);
-                    } else {
-                        isAnswerInsertedSuccessfully = AnswerDAO.insertNewAnswer(latestQuizId + 1, latestAnswerId + 1 + i, answers.get(i).get(), false, now);
-                    }
-                }
-                if (!isAnswerInsertedSuccessfully) {
-                    break;
-                }
+            // insert the correct answer options to the db
+
+            for (Integer correctAn : correctAns) {
+                isAnswerInsertedSuccessfully = isAnswerInsertedSuccessfully && AnswerDAO.insertNewAnswer(latestQuizId + 1, latestAnswerId + correctAn + 1, answers.get(correctAn).get(), true, now);
             }
+
+            // insert incorrect answers to the database
+            for (Integer incorrectAn : incorrectAns) {
+                isAnswerInsertedSuccessfully = isAnswerInsertedSuccessfully && AnswerDAO.insertNewAnswer(latestQuizId + 1, latestAnswerId + incorrectAn + 1, answers.get(incorrectAn).get(), false, now);
+            }
+
             if (isAnswerInsertedSuccessfully && isQuizInsertedSuccessfully) {
                 request.setAttribute("inserted", true);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
