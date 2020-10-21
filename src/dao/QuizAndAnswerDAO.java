@@ -92,13 +92,6 @@ public class QuizAndAnswerDAO {
         return 0;
     }
 
-    public static Map<Integer, List<Integer>> getQuizzesAndCorrectAnsFirst(List<QuizBean> quizIds) throws SQLException {
-        Map<Integer, List<Integer>> quizToCorrectAns = new HashMap<>();
-        for (QuizBean quizId : quizIds) {
-            List<Integer> correctAns = AnswerDAO.correctAnswersForQuiz(quizId.getQuizId());
-            quizToCorrectAns.put(quizId.getQuizId(), correctAns);
-        }
-        return quizToCorrectAns;
-    }
+
 
 }

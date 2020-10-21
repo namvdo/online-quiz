@@ -30,16 +30,14 @@ public class UserDAO {
      */
     public static boolean registerUser(String username, String password, String email, boolean isTeacher) throws SQLException {
         int rsNo = 0;
-        String sql;
-        if (isTeacher) {
-            sql = "insert into teacher (teacher_username, password, email) values (?, ?, ?)";
-        } else {
-            sql = "insert into student(student_username, password, email) values (?, ?, ?)";
-        }
+        String sql = "insert into account(username, password, email, is_teacher) values (?, ?, ?, ?)";
+
+
         pre = connection.prepareStatement(sql);
         pre.setString(1, username);
         pre.setString(2, password.substring(0, 50));
         pre.setString(3, email);
+        pre.setBoolean(4, isTeacher);
         try {
             rsNo = pre.executeUpdate();
         } catch (Exception e) {
@@ -63,12 +61,7 @@ public class UserDAO {
     }
 
     public static boolean isLoggedInSuccessfully(String username, String password, boolean isTeacher) throws SQLException {
-        String sql;
-        if (isTeacher) {
-            sql = "select top 1 * from [OnlineQuiz].[dbo].[teacher] where teacher_username = ? and password = ?";
-        } else {
-            sql = "select top 1 * from [OnlineQuiz].[dbo].[student] where student_username = ? and password = ?";
-        }
+        String sql = "select top 1 * from [OnlineQuiz].[dbo].[account] where username = ? and password = ?";
         pre = connection.prepareStatement(sql);
         pre.setString(1, username);
         pre.setString(2, password);
@@ -76,7 +69,7 @@ public class UserDAO {
         return rs.next();
     }
     public static boolean isUserATeacher(String username) throws SQLException {
-        String sql = "select top 1 * from [OnlineQuiz].[dbo].[teacher] where teacher_username = ?";
+        String sql = "select top 1 * from [OnlineQuiz].[dbo].[account] where username = ? and is_teacher = 1";
         pre = connection.prepareStatement(sql);
         pre.setString(1, username);
         rs = pre.executeQuery();
