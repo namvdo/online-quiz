@@ -28,7 +28,9 @@
                <td>${item.quizDescription}</td>
                <td><fmt:formatDate value="${item.createdAt}" type="date"/></td>
                <c:set var="idx" value="${idx + 1}"/>
-               <td><a href="${pageContext.request.contextPath}/DeleteQuiz?quizId=${item.quizId}"><button>Delete</button></a></td>
+               <c:if test="${item.answered != true}">
+                    <td><a href="${pageContext.request.contextPath}/DeleteQuiz?quizId=${item.quizId}"><button>Delete</button></a></td>
+               </c:if>
            </tr>
        </c:forEach>
     </tbody>

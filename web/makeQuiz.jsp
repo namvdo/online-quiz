@@ -10,26 +10,26 @@
 <form action="${pageContext.request.contextPath}/MakeQuiz" id="make-quiz" role="form">
         <div class = "form-group">
             <label for = "question">Question</label>
-            <textarea type = "text" name="quizDes" class = "form-control" rows="2" id="question" placeholder = "Enter the quiz description..."></textarea>
+            <textarea type = "text" name="quizDes" class = "form-control" rows="2" id="question" placeholder = "Enter the quiz description...">${quizDes}</textarea>
         </div>
         <div class = "form-group">
             <label>Option 1</label>
-            <textarea id="otp1" name="opt1" class = "form-control"  placeholder = "Enter the first option"></textarea>
+            <textarea id="otp1" name="opt1" class = "form-control"  placeholder = "Enter the first option">${answer1}</textarea>
         </div>
         <div class = "form-group">
             <label>Option 2</label>
-            <textarea id="otp2" name="opt2" class = "form-control" placeholder = "Enter the second option"></textarea>
+            <textarea id="otp2" name="opt2" class = "form-control" placeholder = "Enter the second option">${answer2}</textarea>
         </div>
         <div class = "form-group">
             <label>Option 3</label>
-            <textarea id="otp3" name="opt3" class = "form-control"  placeholder = "Enter the third option"></textarea>
+            <textarea id="otp3" name="opt3" class = "form-control"  placeholder = "Enter the third option">${answer3}</textarea>
         </div>
         <div class = "form-group">
             <label>Option 4</label>
-            <textarea id="otp4" name="opt4" class = "form-control" placeholder = "Enter the fourth option"></textarea>
+            <textarea id="otp4" name="opt4" class = "form-control" placeholder = "Enter the fourth option">${answer4}</textarea>
         </div>
         <c:forEach begin="0" end="3" var="current">
-            <input value="${current}" name="answer" type="checkbox" style="width:20px;height:20px;"> Option ${current + 1}
+                <input value="${current}" name="answer" type="checkbox" style="width:20px;height:20px;"> Option ${current + 1}
         </c:forEach>
         <button type="submit" class="btn btn-success">Insert</button>
 </form>

@@ -13,6 +13,11 @@ public class QuizBean implements Serializable {
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
+    // new property to determine whether this quiz has been answered by student, if it's
+    // then we cannot delete this quiz
+
+    private boolean answered;
+
     public QuizBean() {
 
     }
@@ -24,6 +29,7 @@ public class QuizBean implements Serializable {
         this.createdBy = createdBy;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.answered = false;
     }
 
     public int getQuizId() {
@@ -80,6 +86,14 @@ public class QuizBean implements Serializable {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 
     public void setUpdatedAt(Timestamp updatedAt) {

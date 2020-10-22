@@ -27,6 +27,7 @@ public class QuizInitializer extends HttpServlet {
             HttpSession session = request.getSession();
             List<QuizBean> quizzes = QuizDAO.getQuizzesRandomly(quizNums);
             int allQuizzes = (int) session.getAttribute("allQuizzes");
+
             if (quizNums > allQuizzes) {
                 request.setAttribute("invalidInput", true);
                 request.getRequestDispatcher("./index.jsp").forward(request, response);

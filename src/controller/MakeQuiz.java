@@ -4,6 +4,7 @@ import dao.AnswerDAO;
 import dao.QuizDAO;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +38,21 @@ public class MakeQuiz extends HttpServlet {
             answers.add(o2);
             answers.add(o3);
             answers.add(o4);
-            System.out.println("quiz des: " + quizDesc);
+
+
+            // checked answer options
+            String[] options = request.getParameterValues("answer");
+
+            // add cookie to the browser to remember the last action from the user
+            request.setAttribute("quizDes", quizDesc);
+            request.setAttribute("answer1", answers.get(0).get());
+            request.setAttribute("answer2", answers.get(1).get());
+            request.setAttribute("answer3", answers.get(2).get());
+            request.setAttribute("answer4", answers.get(3).get());
+            // iterate through all checkboxes
+            for(int i = 0; i < options.length; i++) {
+                request.setAttribute("option" + i, i);
+            }
             // check if the quiz description is null, then forward the request
             if (quizDesc.isEmpty()) {
                 request.setAttribute("emptyQuizDes", true);
@@ -69,7 +84,6 @@ public class MakeQuiz extends HttpServlet {
             String teacherId = (String) request.getSession().getAttribute("user");
             List<Integer> correctAns = new ArrayList<>();
             List<Integer> incorrectAns = new ArrayList<>();
-            String[] options = request.getParameterValues("answer");
             if (options.length == 4) {
                 request.setAttribute("oversized", true);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);

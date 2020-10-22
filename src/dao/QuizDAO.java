@@ -106,9 +106,19 @@ public class QuizDAO {
             quiz.setQuizDescription(rs.getString(3));
             quiz.setCreatedAt(rs.getTimestamp(5));
             quiz.setQuizId(rs.getInt(1));
+            if (isQuizAlreadyPresentedInStudentTry(quiz.getQuizId())) {
+                quiz.setAnswered(true);
+            }
             quizzes.add(quiz);
+
         }
-        quizzes.forEach(System.out::println);
         return quizzes;
+    }
+
+    public static boolean isQuizAlreadyPresentedInStudentTry(int quizId) throws SQLException {
+        String sql = "select top 1 * from cluster_detail where quiz_id = ?";
+        pre = conn.prepareStatement(sql);
+        pre.setInt(1, quizId);
+        return pre.executeQuery().next();
     }
 }
