@@ -29,7 +29,7 @@
                <td><fmt:formatDate value="${item.createdAt}" type="date"/></td>
                <c:set var="idx" value="${idx + 1}"/>
                <c:if test="${item.answered != true}">
-                    <td><a href="${pageContext.request.contextPath}/DeleteQuiz?quizId=${item.quizId}"><button>Delete</button></a></td>
+                    <td><a href="${pageContext.request.contextPath}/DeleteQuiz?quizId=${item.quizId}"><button onclick="return confirm('Do you really want to delete this quiz?')">Delete</button></a></td>
                </c:if>
            </tr>
        </c:forEach>
@@ -38,9 +38,14 @@
 <c:if test="${successfullyDeleted == true}">
     <p style="text-align:center">Successfully deleted.</p>
 </c:if>
+<c:if test="${successfullyDeleted == false}">
+    <p style="text-align:center">Fail to delete the quiz.</p>
+</c:if>
 <c:forEach begin="1" end="${pages}" step="1" var="page">
     <a href="ManageQuiz?page=${page}">${page}</a>
 </c:forEach>
+<script>
+</script>
 </div>
 </div>
 </body>

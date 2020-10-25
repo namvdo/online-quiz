@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="header.jsp"%>
+<%@page isErrorPage="true" %>
 <h3 style="color:red">There are some errors, maybe you haven't logged in yet, or some other kind of errors that have been occurred.</h3>
 </body>
 </html>

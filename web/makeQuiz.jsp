@@ -7,7 +7,7 @@
 --%>
 <%@ include file="header.jsp" %>
 <div class="containter">
-
+<%@ page errorPage="errorPage.jsp"%>
 <form action="${pageContext.request.contextPath}/MakeQuiz" id="make-quiz" role="form">
         <div class = "form-group">
             <label for = "question">Question</label>
