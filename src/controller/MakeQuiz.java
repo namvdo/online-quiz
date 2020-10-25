@@ -40,19 +40,15 @@ public class MakeQuiz extends HttpServlet {
             answers.add(o4);
 
 
-            // checked answer options
-            String[] options = request.getParameterValues("answer");
 
-            // add cookie to the browser to remember the last action from the user
+
+            // this is for cache the last submit from the user, for displaying purpose.
             request.setAttribute("quizDes", quizDesc);
             request.setAttribute("answer1", answers.get(0).get());
             request.setAttribute("answer2", answers.get(1).get());
             request.setAttribute("answer3", answers.get(2).get());
             request.setAttribute("answer4", answers.get(3).get());
-            // iterate through all checkboxes
-            for(int i = 0; i < options.length; i++) {
-                request.setAttribute("option" + i, i);
-            }
+
             // check if the quiz description is null, then forward the request
             if (quizDesc.isEmpty()) {
                 request.setAttribute("emptyQuizDes", true);
@@ -69,18 +65,28 @@ public class MakeQuiz extends HttpServlet {
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
                 return;
             }
-            // check how many answer options are not null, if there is only 1 then forward to makeQuiz.jsp and alert fail to insert
+            // check how many answer options are not null, if there are not 4 options provided then forward to the makeQuiz.jsp
+            // and inform insufficient options provided.
             int optionsNonEmpty = 0;
             for(Optional<String> option: answers) {
                 if (!option.get().isEmpty()) {
                     optionsNonEmpty++;
                 }
             }
-            if (optionsNonEmpty < 2) {
+            if (optionsNonEmpty != 4) {
                 request.setAttribute("noQuiz", optionsNonEmpty);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
                 return;
             }
+            // checked answer options
+            String[] options = request.getParameterValues("answer");
+
+            if (options == null) {
+                request.setAttribute("noCheckedAnswer", true);
+                request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
+                return;
+            }
+
             String teacherId = (String) request.getSession().getAttribute("user");
             List<Integer> correctAns = new ArrayList<>();
             List<Integer> incorrectAns = new ArrayList<>();
@@ -90,8 +96,11 @@ public class MakeQuiz extends HttpServlet {
                 return;
 
             }
-            for(int i = 0; i < options.length; i++) {
-                correctAns.add(Integer.parseInt(options[i]));
+
+            // iterate through all checkboxes
+            for (String s : options) {
+                request.setAttribute("option" + s, true);
+                correctAns.add(Integer.parseInt(s));
             }
             for(int i = 0; i < 4; i++) {
                 if (!correctAns.contains(i)) {

@@ -27,7 +27,6 @@ public class QuizInitializer extends HttpServlet {
             HttpSession session = request.getSession();
             List<QuizBean> quizzes = QuizDAO.getQuizzesRandomly(quizNums);
             int allQuizzes = (int) session.getAttribute("allQuizzes");
-
             if (quizNums > allQuizzes) {
                 request.setAttribute("invalidInput", true);
                 request.getRequestDispatcher("./index.jsp").forward(request, response);
@@ -40,7 +39,7 @@ public class QuizInitializer extends HttpServlet {
                 return;
             }
             session.setAttribute("quizzes", quizzes);
-            Timestamp createdTime = new Timestamp((new Date()).getTime());
+            Timestamp createdTime = new Timestamp(System.currentTimeMillis());
             session.setAttribute("createdTime", createdTime);
             // for testing purpose, I set the time for answering quizzes is for 1 minute.
             session.setAttribute("totalTime", 60);

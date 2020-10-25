@@ -72,6 +72,7 @@ public class TakeQuiz extends HttpServlet {
             Timestamp createdTime = (Timestamp) session.getAttribute("createdTime");
             int totalTime = (int) session.getAttribute("totalTime");
 
+
             System.out.println("index: " + currentQuizIdx);
             // this means the actual index of the quiz on the db
             currentQuizId = quizzes.get(currentQuizIdx).getQuizId();
@@ -83,6 +84,8 @@ public class TakeQuiz extends HttpServlet {
             System.out.println("current answers: " + Arrays.toString(request.getParameterValues("answer")));
             // if the user presses the submit button.
             if (request.getParameter("submit") != null) {
+                finishTheQuiz(request, response);
+            } else if (currentTime.getTime() >= totalTime * 1000 + createdTime.getTime()) {
                 finishTheQuiz(request, response);
             }
             // if the time is up, then cache the last answer(s) for the current quiz, because there is "nothing" submitted
@@ -106,6 +109,7 @@ public class TakeQuiz extends HttpServlet {
             }else {
                 request.getRequestDispatcher("/takeQuiz.jsp").forward(request, response);
             }
+
        } catch (Exception e) {
             System.out.println("Some error here");
             e.printStackTrace();
