@@ -6,7 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="header.jsp"%>
-
+<c:if test="${rejected == true}">
+    Your test has been rejected.
+</c:if>
 <c:choose>
     <c:when test="${score >= 5}">
         <div id="quiz-result container text-center mt-10">

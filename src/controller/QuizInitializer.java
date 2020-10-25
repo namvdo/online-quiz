@@ -42,7 +42,7 @@ public class QuizInitializer extends HttpServlet {
             Timestamp createdTime = new Timestamp(System.currentTimeMillis());
             session.setAttribute("createdTime", createdTime);
             // for testing purpose, I set the time for answering quizzes is for 1 minute.
-            session.setAttribute("totalTime", 60);
+            session.setAttribute("totalTime", 10);
             request.getRequestDispatcher("/TakeQuiz").forward(request, response);
         } catch (Exception throwable) {
             throwable.printStackTrace();

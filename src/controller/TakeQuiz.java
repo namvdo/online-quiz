@@ -82,10 +82,12 @@ public class TakeQuiz extends HttpServlet {
             session.setAttribute("currentQuizIdx", currentQuizIdx);
             session.setAttribute("quiz", quizzes.get(currentQuizIdx));
             System.out.println("current answers: " + Arrays.toString(request.getParameterValues("answer")));
+            if (currentTime.getTime() >= totalTime * 1000 + createdTime.getTime()) {
+                request.setAttribute("rejected", true);
+                request.getRequestDispatcher("/quizResult.jsp").forward(request, response);
+            }
             // if the user presses the submit button.
             if (request.getParameter("submit") != null) {
-                finishTheQuiz(request, response);
-            } else if (currentTime.getTime() >= totalTime * 1000 + createdTime.getTime()) {
                 finishTheQuiz(request, response);
             }
             // if the time is up, then cache the last answer(s) for the current quiz, because there is "nothing" submitted
