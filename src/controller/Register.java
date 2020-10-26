@@ -17,9 +17,13 @@ public class Register extends HttpServlet {
             String email = request.getParameter("email");
             boolean isTeacher = request.getParameter("option").equals("teacher");
             boolean isRegisteredSuccessfully = UserDAO.registerUser(username, Utility.applySha256(password), email, isTeacher);
+            request.setAttribute("account", username);
+            request.setAttribute("pass", password);
+            request.setAttribute("mail", email);
+            request.setAttribute("teacher", isTeacher);
             System.out.println("register: " + isRegisteredSuccessfully);
             request.setAttribute("successfullyRegister", isRegisteredSuccessfully);
-            request.getRequestDispatcher("/afterRegistration.jsp").forward(request, response);
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             request.setAttribute("successfullyRegister", false);
