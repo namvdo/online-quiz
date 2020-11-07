@@ -1,6 +1,9 @@
 package controller;
 
+import bean.AnswerBean;
+import bean.QuizBean;
 import dao.AnswerDAO;
+import dao.QuizAndAnswerDAO;
 import dao.QuizDAO;
 
 import javax.servlet.ServletException;
@@ -89,7 +92,6 @@ public class MakeQuiz extends HttpServlet {
 
             String teacherId = (String) request.getSession().getAttribute("user");
             List<Integer> correctAns = new ArrayList<>();
-            List<Integer> incorrectAns = new ArrayList<>();
             if (options.length == 4) {
                 request.setAttribute("oversized", true);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
@@ -97,35 +99,46 @@ public class MakeQuiz extends HttpServlet {
 
             }
 
-            // iterate through all checkboxes
-            for (String s : options) {
-                request.setAttribute("option" + s, true);
-                correctAns.add(Integer.parseInt(s));
-            }
-            for(int i = 0; i < 4; i++) {
-                if (!correctAns.contains(i)) {
-                    incorrectAns.add(i);
-                }
-            }
             int latestQuizId = QuizDAO.getTheLatestQuizId();
             int latestAnswerId = AnswerDAO.getTheLatestAnswerId();
             Timestamp now = new Timestamp(System.currentTimeMillis());
+            List<AnswerBean> answerOptions = new ArrayList<>();
+            QuizBean quizBean = new QuizBean();
+            quizBean.setQuizId(latestQuizId + 1);
+            quizBean.setQuizDescription(quizDesc);
+            quizBean.setCreatedBy(teacherId);
+            quizBean.setWeight((byte) 1);
+            quizBean.setCreatedAt(now);
 
-
-            boolean isAnswerInsertedSuccessfully = true;
-            boolean isQuizInsertedSuccessfully = QuizDAO.insertNewQuiz(latestQuizId + 1, quizDesc, teacherId, 1, now);
-            // insert the correct answer options to the db
-
-            for (Integer correctAn : correctAns) {
-                isAnswerInsertedSuccessfully = isAnswerInsertedSuccessfully && AnswerDAO.insertNewAnswer(latestQuizId + 1, latestAnswerId + correctAn + 1, answers.get(correctAn).get(), true, now);
+            // iterate through all correct checked answers
+            for (String s : options) {
+                request.setAttribute("option" + s, true);
+                correctAns.add(Integer.parseInt(s));
+                int answerIdx = Integer.parseInt(s);
+                AnswerBean answerOption = new AnswerBean();
+                answerOption.setQuizId(quizBean.getQuizId());
+                answerOption.setAnswerText(answers.get(answerIdx).get());
+                answerOption.setAnswerId(latestAnswerId + 1 + answerIdx);
+                answerOption.setCreatedTime(now);
+                answerOption.setCorrect(true);
+                answerOptions.add(answerOption);
+            }
+            // this is for unchecked answer options
+            for(int i = 0; i < 4; i++) {
+                if (!correctAns.contains(i)) {
+                    AnswerBean answerOption = new AnswerBean();
+                    answerOption.setQuizId(quizBean.getQuizId());
+                    answerOption.setAnswerText(answers.get(i).get());
+                    answerOption.setAnswerId(latestAnswerId + 1 + i);
+                    answerOption.setCreatedTime(now);
+                    answerOption.setCorrect(false);
+                    answerOptions.add(answerOption);
+                }
             }
 
-            // insert incorrect answers to the database
-            for (Integer incorrectAn : incorrectAns) {
-                isAnswerInsertedSuccessfully = isAnswerInsertedSuccessfully && AnswerDAO.insertNewAnswer(latestQuizId + 1, latestAnswerId + incorrectAn + 1, answers.get(incorrectAn).get(), false, now);
-            }
 
-            if (isAnswerInsertedSuccessfully && isQuizInsertedSuccessfully) {
+            boolean isInsertedSuccessfully = QuizAndAnswerDAO.insertQuizAndAnswers(quizBean, answerOptions);
+            if (isInsertedSuccessfully) {
                 request.setAttribute("inserted", true);
                 request.getRequestDispatcher("/makeQuiz.jsp").forward(request, response);
             }

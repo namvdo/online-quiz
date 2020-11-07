@@ -92,16 +92,73 @@ public class QuizAndAnswerDAO {
         return 0;
     }
 
+    public static boolean insertQuizAndAnswers(QuizBean quiz, List<AnswerBean> answers) throws SQLException {
+        System.out.println("quiz id: " + quiz.getQuizId());
+        String insertQuizSql = "insert into [OnlineQuiz].[dbo].[quiz]" +
+                "(quiz_id, quiz_description, created_by, weight, created_at) " +
+                "values (?, ?, ?, ?, ?)";
+        String insertAnswerSql = "insert into [OnlineQuiz].[dbo].[quiz_answer]" +
+                "(quiz_id, answer_id, answer_text, is_correct, created_at) " +
+                "values (?, ?, ?, ?, ?)";
+        PreparedStatement insertAnswer = conn.prepareStatement(insertAnswerSql);
+        try {
+            conn.setAutoCommit(false);
+            if (quiz == null || answers.size() != 4) {
+                return false;
+            }
+            pre = conn.prepareStatement(insertQuizSql);
+            pre.setInt(1, quiz.getQuizId());
+            pre.setString(2, quiz.getQuizDescription());
+            pre.setString(3, quiz.getCreatedBy());
+            pre.setInt(4, 1);
+            pre.setTimestamp(5, quiz.getCreatedAt());
+            int quizRowCount = pre.executeUpdate();
+            int answerRowCount = 0;
+            for(int i = 0; i < answers.size(); i++) {
+
+                insertAnswer.setInt(1, quiz.getQuizId());
+                insertAnswer.setInt(2, answers.get(i).getAnswerId());
+                insertAnswer.setString(3, answers.get(i).getAnswerText());
+                insertAnswer.setBoolean(4, answers.get(i).isCorrect());
+                insertAnswer.setTimestamp(5, answers.get(i).getCreatedTime());
+                answerRowCount += insertAnswer.executeUpdate();
+            }
+            conn.commit();
+            return quizRowCount == 1 && answerRowCount == 4;
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (pre != null) {
+                pre.close();
+            } if (insertAnswer != null) {
+                insertAnswer.close();
+            }
+        }
+    }
     public static boolean deleteQuizAndAnswers(int quizId) throws SQLException {
-        String sql = "delete from [onlinequiz].[dbo].[quiz_answer] where quiz_id = ?";
-        pre = conn.prepareStatement(sql);
-        pre.setInt(1, quizId);
-        int deletedAnswerCount = pre.executeUpdate();
-        sql = "delete from [onlinequiz].[dbo].[quiz] where quiz_id = ?";
-        pre = conn.prepareStatement(sql);
-        pre.setInt(1, quizId);
-        int deletedQuizCount = pre.executeUpdate();
-        return deletedAnswerCount != 0 && deletedQuizCount == 1;
+        try {
+            conn.setAutoCommit(false);
+            String sql = "delete from [onlinequiz].[dbo].[quiz_answer] where quiz_id = ?";
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, quizId);
+            int deletedAnswerCount = pre.executeUpdate();
+            sql = "delete from [onlinequiz].[dbo].[quiz] where quiz_id = ?";
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, quizId);
+            int deletedQuizCount = pre.executeUpdate();
+            conn.commit();
+            return deletedAnswerCount != 0 && deletedQuizCount == 1;
+        } catch (SQLException e) {
+            if (conn != null) {
+                conn.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

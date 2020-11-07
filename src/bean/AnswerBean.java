@@ -70,4 +70,15 @@ public class AnswerBean implements Serializable {
         this.answerText = answerText;
     }
 
+    @Override
+    public String toString() {
+        return "AnswerBean{" +
+                "quizId=" + quizId +
+                ", answerId=" + answerId +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                ", isCorrect=" + isCorrect +
+                ", answerText='" + answerText + '\'' +
+                '}';
+    }
 }

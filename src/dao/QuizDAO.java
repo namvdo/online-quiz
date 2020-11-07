@@ -52,17 +52,7 @@ public class QuizDAO {
         }
         return 0;
     }
-    public static boolean insertNewQuiz(int quizId, String quizDesc, String createdBy, int weight, Timestamp createdAt) throws SQLException {
-        String sql = "insert into [OnlineQuiz].[dbo].[quiz](quiz_id, quiz_description, created_by, weight, created_at) values (?, ?, ?, ?, ?)";
-        if (quizDesc.isEmpty()) return false;
-        pre = conn.prepareStatement(sql);
-        pre.setInt(1, quizId);
-        pre.setString(2, quizDesc);
-        pre.setString(3, createdBy);
-        pre.setInt(4, weight);
-        pre.setTimestamp(5, createdAt);
-        return pre.executeUpdate() == 1;
-    }
+
 
     public static int getNumOfQuizzes() throws SQLException {
         String sql = "select count(*) as count from [OnlineQuiz].[dbo].[quiz]";
