@@ -46,11 +46,11 @@ const getChosenAnswers = () => {
 }
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const time = urlParams.get("totalTime");
+    const time = parseInt(urlParams.get("totalTime"));
     console.log("total time: " + time);
     let display = document.querySelector("#time");
     if (sessionStorage.getItem("time") == null) {
-        startTimer(time, display);
+        startTimer(time - 1, display);
     } else {
         let timeNow = sessionStorage.getItem("time");
         console.log(timeNow);
