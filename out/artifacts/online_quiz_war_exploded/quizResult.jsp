@@ -7,7 +7,7 @@
 --%>
 <%@include file="header.jsp"%>
 <c:if test="${rejected == true}">
-    Your test has been rejected.
+    <p class="text-center">Your test has been rejected.</p>
 </c:if>
 <c:choose>
     <c:when test="${score >= 5}">

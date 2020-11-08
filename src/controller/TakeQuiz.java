@@ -82,13 +82,15 @@ public class TakeQuiz extends HttpServlet {
             session.setAttribute("currentQuizIdx", currentQuizIdx);
             session.setAttribute("quiz", quizzes.get(currentQuizIdx));
             System.out.println("current answers: " + Arrays.toString(request.getParameterValues("answer")));
-            if (currentTime.getTime() >= totalTime * 1000 + createdTime.getTime()) {
+            if (currentTime.getTime() >= totalTime * 2000 + createdTime.getTime()) {
                 request.setAttribute("rejected", true);
                 request.getRequestDispatcher("/quizResult.jsp").forward(request, response);
+                return;
             }
             // if the user presses the submit button.
             if (request.getParameter("submit") != null) {
                 finishTheQuiz(request, response);
+                return;
             }
             // if the time is up, then cache the last answer(s) for the current quiz, because there is "nothing" submitted
             // then we cannot cache the last answer(s) because of this, we need to add query strings by javascript on countDown.js, and here we get the quiz_id

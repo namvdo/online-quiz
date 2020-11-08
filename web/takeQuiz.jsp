@@ -15,6 +15,9 @@
 <div class="time-elapsing text-center pt-3" >
     Time remaining:
     <div id="time" style="color:blue">
+        <c:if test="${formatTime != null}">
+            ${formatTime}
+        </c:if>
     </div>
 </div>
 <div class="container ml-50">
@@ -51,9 +54,7 @@
         <c:if test="${currentQuizIdx < quizzes.size() - 1}">
             <input type="submit" value="Next" name="next">
         </c:if>
-<%--        <c:if test="${currentQuizIdx == quizzes.size() - 1 or allAnswered == true}">--%>
             <input type="submit" name="submit" value="Submit">
-<%--        </c:if>--%>
     </form>
 </div>
 <script src="countDown.js"></script>

@@ -7,17 +7,17 @@
 --%>
 <%@include file="header.jsp"%>
 <c:if test="${rejected == true}">
-    Your test has been rejected.
+    <p class="text-center">Your test has been rejected.</p>
 </c:if>
 <c:choose>
     <c:when test="${score >= 5}">
         <div id="quiz-result container text-center mt-10">
-            <p>Your score: ${score} (${score * 10}) - Passed</p>
+            <p class="text-center">Your score: ${score} (${score * 10}) - Passed</p>
         </div>
     </c:when>
     <c:otherwise>
         <div class="quiz-result container text-center mt-10">
-            <p>Your score: ${score} (${score * 10}%) - Not pass</p>
+            <p class="text-center">Your score: ${score} (${score * 10}%) - Not pass</p>
         </div>
     </c:otherwise>
 </c:choose>

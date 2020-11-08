@@ -41,14 +41,23 @@ public class QuizInitializer extends HttpServlet {
             session.setAttribute("quizzes", quizzes);
             Timestamp createdTime = new Timestamp(System.currentTimeMillis());
             session.setAttribute("createdTime", createdTime);
-            // for testing purpose, I set the time for answering quizzes is for 1 minute.
-            session.setAttribute("totalTime", 10);
-            request.getRequestDispatcher("/TakeQuiz").forward(request, response);
+            int totalTime = quizNums * 10;
+            session.setAttribute("totalTime", totalTime);
+            session.setAttribute("formatTime", convertTime(totalTime));
+            response.sendRedirect("TakeQuiz?totalTime=" + ((int)(session.getAttribute("totalTime"))));
         } catch (Exception throwable) {
             throwable.printStackTrace();
             System.out.println("Some errors here on QuizInitializer, maybe cannot parse the string or some kind.");
             request.setAttribute("invalidInput", true);
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
+    }
+
+    private static String convertTime(int totalTime) {
+        int seconds = totalTime % 60;
+        int minutes = (int) Math.floor(totalTime / 60);
+        String formatSecond = (seconds < 10 ? "0" + seconds : "" + seconds);
+        String formatMinute = (minutes < 10 ? "0" + minutes : "" + minutes);
+        return formatMinute + ":" + formatSecond;
     }
 }
