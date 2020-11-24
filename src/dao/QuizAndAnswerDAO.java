@@ -15,7 +15,7 @@ public class QuizAndAnswerDAO {
     static PreparedStatement pre;
     static Statement statement;
     static ResultSet rs;
-
+    // this is kidda terrible static block, the connection here should not be singleton, you should modify this.
     static  {
         try {
             conn = DBConnection.getInstance().getConnection();
@@ -45,25 +45,7 @@ public class QuizAndAnswerDAO {
             return false;
         }
     }
-    public static boolean insertClusterDetail(int clusterId, Map<Integer, List<Integer>> studentAnswers) throws SQLException {
-        String sql = "insert into [OnlineQuiz].[dbo].[cluster_detail](cluster_id, quiz_id, student_choice_answer_id) values (?, ?, ?);";
-        pre = conn.prepareStatement(sql);
-        conn.setAutoCommit(false);
-        for(Map.Entry<Integer, List<Integer>> entry: studentAnswers.entrySet()) {
-           List<Integer> studentAns = entry.getValue();
-            for(int i: studentAns) {
-                pre.setInt(1, clusterId);
-                pre.setInt(2, entry.getKey());
-                pre.setInt(3, i);
-                pre.addBatch();
-            }
-        }
-        int[] updateCounts = pre.executeBatch();
-        conn.commit();
-        conn.setAutoCommit(true);
-        return updateCounts.length > 0;
-
-    }
+    
     public static boolean insertStudentResult(float score, String studentId, int clusterId) {
         String sql = "insert into [OnlineQuiz].[dbo].[student_result](score, student_id, cluster_id) values (?, ?, ?)";
         try {
