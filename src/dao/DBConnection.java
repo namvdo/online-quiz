@@ -8,15 +8,12 @@ public class DBConnection {
     private static DBConnection instance;
     private final Connection connection;
     public static DBConnection getInstance() throws ClassNotFoundException, SQLException {
-        if (instance == null) {
-            instance = new DBConnection();
-        }
-        return instance;
+        return new DBConnection();
     }
     private DBConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String url = "jdbc:sqlserver://localhost:1433;databaseName=OnlineQuiz;";
-        String password = "reallyStrongPwd123";
+        String password = "";
         String username = "sa";
         this.connection = DriverManager.getConnection(url, username, password);
     }
@@ -24,4 +21,14 @@ public class DBConnection {
     public Connection getConnection() {
         return connection;
     }
+    
+    public static void closeConnection(Connection con, PreparedStatement pre, ResultSet rs) {
+         if (rs != null && !rs.isClosed()) {
+            rs.close();
+        } if (pre != null && !pre.isClosed()) {
+            pre.close();
+        } if (con != null && !con.isClosed()) {
+            con.close();
+        }
+     }
 }
